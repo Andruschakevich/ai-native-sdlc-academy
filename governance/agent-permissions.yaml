@@ -1,0 +1,41 @@
+version: 1
+profiles:
+  discovery-agent:
+    repository: read
+    issues: read
+    ci_results: read
+    observability: read_redacted
+    source_write: false
+    production_database: none
+    secrets: none
+    deployment: none
+  implementation-agent:
+    repository: read
+    workspace: write_isolated
+    pull_request: create
+    ci: run_approved_checks
+    observability: none
+    production_database: none
+    secrets: none
+    deployment: none
+  verification-agent:
+    repository: read
+    pull_request: read
+    ci_results: read
+    test_environment: approved_synthetic_data
+    production_database: none
+    secrets: none
+    deployment: none
+  release-agent:
+    repository: read
+    ci_results: read
+    deployment: policy_scoped_workflow_only
+    production_metrics: read
+    production_database: none
+    secrets: via_controlled_secret_broker_only
+    approval_required: true
+  recovery-agent:
+    production_metrics: read
+    recovery_plan: propose_only
+    financial_actions: human_approval
+    destructive_data_actions: human_approval

@@ -1,0 +1,47 @@
+{
+  "workflowId": "subscription-management-training-001",
+  "case": "Self-Service Subscription Management",
+  "version": 1,
+  "state": "DISCOVERY_APPROVED",
+  "autonomy": "L4_BOUNDED",
+  "currentGate": "SPECIFICATION_READINESS",
+  "decisionOwner": "Product Owner",
+  "releaseApprovalRequired": true,
+  "workPackages": [
+    {
+      "id": "WP-01",
+      "state": "COMPLETED",
+      "output": "case-study/02-discovery/system-context.md"
+    },
+    {
+      "id": "WP-02",
+      "state": "READY",
+      "output": "case-study/03-specification/requirements.md"
+    },
+    {
+      "id": "WP-03",
+      "state": "BLOCKED",
+      "blockedBy": [
+        "WP-02"
+      ],
+      "reason": "Requires approved requirements and acceptance criteria"
+    },
+    {
+      "id": "WP-04",
+      "state": "BLOCKED",
+      "blockedBy": [
+        "WP-02"
+      ],
+      "reason": "Requires confirmed service contracts"
+    }
+  ],
+  "evidence": [
+    "case-study/01-intent/business-intent.md",
+    "case-study/02-discovery/domain-model.md",
+    "case-study/02-discovery/impact-analysis.md"
+  ],
+  "openRisks": [
+    "Synthetic service boundaries must be validated against an actual codebase",
+    "Provider-specific payment and webhook semantics remain implementation-dependent"
+  ]
+}
