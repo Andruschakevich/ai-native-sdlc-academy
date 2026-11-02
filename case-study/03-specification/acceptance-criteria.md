@@ -1,4 +1,4 @@
-# Acceptance Criteria
+# Acceptance Criteria — Subscription Management
 
 ## AC-01 Immediate upgrade succeeds
 Given an eligible active subscription and Admin, with Billing Owner approval when a charge is due, when the user confirms and payment succeeds, then the subscription and entitlements move to the target plan, the operation is audited and confirmation is sent.
