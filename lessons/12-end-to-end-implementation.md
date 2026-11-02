@@ -176,7 +176,7 @@ Do not confuse storage types:
 - Immutable audit storage: actions, policy decisions and approvals.
 - Observability: technical and business metrics.
 
-A central Governance repository is not a reason to move every service-specific rule into it. See [Governance Policy](../governance/ai-governance-policy.md) and [Target Architecture](../reference/target-architecture.md).
+A central Governance repository is not a reason to move every service-specific rule into it. See [Governance Policy](../governance/ai-governance-policy.md), [Risk Classification](../governance/risk-classification.md), [Model Routing](../governance/model-routing.yaml), [Audit Record Schema](../governance/audit-record.schema.json) and [Target Architecture](../reference/target-architecture.md).
 
 ## 7. Capstone: build the first vertical slice
 

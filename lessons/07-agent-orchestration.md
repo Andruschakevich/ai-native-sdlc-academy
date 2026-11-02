@@ -178,7 +178,7 @@ For Subscription Management:
 - Orchestrator records findings and moves to NEEDS_FIX or VERIFIED.
 - Human approver handles merge/release gates according to policy.
 
-See [work-package contracts](../orchestration/work-packages.md), [approval matrix](../governance/approval-matrix.md) and [agent permissions](../governance/agent-permissions.yaml).
+See [work-package contracts](../orchestration/work-packages.md), the [WP-05 Task Packet](../case-study/05-execution/task-packet-WP-05.md), [approval matrix](../governance/approval-matrix.md), [risk classification](../governance/risk-classification.md) and [agent permissions](../governance/agent-permissions.yaml).
 
 ## 11. Measuring orchestration
 

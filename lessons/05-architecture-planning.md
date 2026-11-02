@@ -89,7 +89,7 @@ The training plan decomposes the initiative into:
 - WP-10: independent quality/security verification;
 - WP-11: progressive release and observation.
 
-See [Implementation Plan](../case-study/04-architecture/implementation-plan.md), [Dependency Graph](../case-study/04-architecture/dependency-graph.md) and [Work Package Contracts](../orchestration/work-packages.md).
+See [Implementation Plan](../case-study/04-architecture/implementation-plan.md), [Dependency Graph](../case-study/04-architecture/dependency-graph.md), [Work Package Contracts](../orchestration/work-packages.md) and the fully populated [WP-05 Immediate Upgrade Task Packet](../case-study/05-execution/task-packet-WP-05.md).
 
 ## 5. Dependencies and parallelism
 

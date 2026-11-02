@@ -33,4 +33,4 @@ Targets are hypotheses, not measured results. Validate baseline and attribution 
 ## Synthetic system landscape
 Web Frontend; Identity & Access; Subscription API and Service; Billing Service; Payment Provider Adapter; Entitlement Service; Promotion Service; Notification Service; Analytics and Support Analytics. See [system context](02-discovery/system-context.md).
 
-Use the [artifact index](ARTIFACT-INDEX.md). Update upstream decisions first and review downstream impacts. These are educational assumptions, not universal subscription rules.
+Use the [artifact index](ARTIFACT-INDEX.md). The detailed [WP-05 Immediate Upgrade Task Packet](05-execution/task-packet-WP-05.md) demonstrates how the specification and architecture are handed to an implementation agent. The [logical API and event contracts](04-architecture/api-contracts.md) and ADRs show the proposed integration boundaries. Update upstream decisions first and review downstream impacts. These are educational assumptions, not universal subscription rules.

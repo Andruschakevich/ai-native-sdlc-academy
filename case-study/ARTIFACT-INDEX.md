@@ -17,5 +17,8 @@
 | Planning | [Implementation Plan](04-architecture/implementation-plan.md) | Work packages |
 | Planning | [Dependency Graph](04-architecture/dependency-graph.md) | Dependencies |
 | Planning | [Plan Review](04-architecture/plan-review.md) | Readiness conditions |
+| Architecture | [ADR-002](04-architecture/ADR-002-entitlement-reconciliation.md) | Entitlement consistency and reconciliation |
+| Architecture | [Logical API and Event Contracts](04-architecture/api-contracts.md) | Example service boundaries and payloads |
+| Execution | [WP-05 Task Packet](05-execution/task-packet-WP-05.md) | Complete bounded implementation contract |
 
 Update upstream decisions first and review every downstream dependency. Never silently override business rules.

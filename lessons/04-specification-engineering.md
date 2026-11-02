@@ -141,7 +141,7 @@ Traceability also works in reverse: a test with no requirement may be testing ac
 
 ## 9. Specification workflow and independent review
 
-The [Specification Engineering Skill](../skills/specification-engineering/SKILL.md) should:
+The [Specification Engineering Skill](../skills/specification-engineering/SKILL.md) operationalizes this workflow. It should:
 
 1. load approved intent and discovery artifacts;
 2. map business outcomes to requirements;
