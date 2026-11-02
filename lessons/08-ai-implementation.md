@@ -1,121 +1,184 @@
 # Lesson 08 — AI Implementation
 
-[Course home](../README.md) · [← Previous lesson](../lessons/07-agent-orchestration.md) · Lesson 08 of 12
+**Outcome:** Implement one approved work package in an existing codebase, preserving business invariants and producing evidence for independent verification.
 
-## Why this lesson matters
+## 1. Implementation is a controlled engineering process
 
-Implementation is a controlled engineering loop, not a prompt followed by a code dump. The agent must understand the system, establish baseline, plan, implement, verify and report.
+This lesson is not “how to ask Claude to write code”. The Implementation Agent receives an approved Task Packet from the orchestrator and must understand the system before editing.
 
-## Learning outcomes
+The core loop is:
 
-- Explain the role of this stage in the end-to-end AI-native SDLC.
-- Identify inputs, outputs, decision owners and exit criteria.
-- Apply the principles to the Subscription Management case study.
-- Recognize when an agent must stop, request clarification or provide evidence.
+1. **Understand:** read Task Packet, specification, ADRs and relevant code.
+2. **Baseline:** inspect existing behavior, tests, contracts and side effects.
+3. **Plan:** identify minimal change, dependencies and risks.
+4. **Implement:** change only the assigned scope.
+5. **Verify:** run relevant tests and checks.
+6. **Report:** return diff, evidence, limitations and handoff.
 
-## Core concepts
+If the actual code contradicts an approved business rule, stop the affected work and raise evidence. Do not silently choose whether the code or policy is correct.
 
-Use Understand → Baseline → Plan → Implement → Verify → Report. Apply spec-driven implementation and TDD: tests derive from approved acceptance criteria; demonstrate failing behavior before the change where practical. Brownfield strategies include minimal patch, vertical slice, characterization tests, feature flag/strangler and contract-first. Never weaken tests to get green.
+## 2. Spec-driven implementation
 
-## How to apply it
+Maintain the chain:
 
-The implementation agent works only on an approved work package. It must inspect existing code and tests, avoid unrelated edits, preserve business invariants, run relevant checks and provide exact evidence.
+`BR-03 → FR-04 → AC-01 → TS-04 → test result → implementation diff`
 
-## Practical exercise
+The implementation is not proof of correctness. Tests should derive from approved acceptance criteria, not simply mirror the code the agent has just written.
 
-Prepare an implementation report that maps changed behavior to requirements and lists commands, outcomes, deviations and unresolved risks. Mark unexecuted checks honestly.
+For each changed behavior, report:
+- requirement and AC IDs;
+- source files and symbols changed;
+- tests added or modified;
+- exact commands executed and outcomes;
+- known limitations;
+- open questions and residual risks.
 
-## Completed case-study artifacts
+## 3. Choose the right brownfield strategy
 
-- [SKILL.md](../skills/implement-work-package/SKILL.md)
-- [work-packages.md](../orchestration/work-packages.md)
-- [implementation-report.md](../orchestration/implementation-report.md)
-- [traceability-matrix.md](../case-study/03-specification/traceability-matrix.md)
+| Strategy | When useful | Risk to manage |
+|---|---|---|
+| Minimal patch | Local change in a well-understood component | Hidden dependencies |
+| Vertical slice | User-visible behavior crosses multiple layers | Contract gaps |
+| Characterization tests | Legacy behavior is poorly documented | Accidentally enshrining a defect |
+| Feature flag / strangler | Risky behavior needs gradual transition | Divergent old/new behavior |
+| Contract-first | Multiple services change together | Contract may be based on false assumptions |
+
+For the subscription feature, use a vertical slice for Upgrade, but agree contracts and invariants first. Avoid rewriting the entire Subscription Service as part of the first slice.
+
+## 4. TDD and AI agents
+
+Use Red → Green → Refactor where appropriate:
+
+- **RED:** write a test from an approved AC; confirm it fails for the expected reason.
+- **GREEN:** implement the smallest change that satisfies it.
+- **REFACTOR:** improve structure without changing approved behavior.
+
+Rules:
+- Do not delete or weaken a failing test merely to make CI green.
+- If test and specification conflict, stop and clarify.
+- Use characterization tests to understand legacy behavior, but do not assume existing behavior is correct.
+- Add integration/contract tests when mocks cannot validate the important boundary.
+
+## 5. Practical vertical slice — Upgrade Subscription
+
+A possible logical execution path:
+
+1. Frontend requests current subscription and available plans.
+2. Backend authenticates actor and checks account-scoped Admin role.
+3. Eligibility service excludes enterprise, bespoke legacy, overdue and disputed accounts.
+4. Billing/Promotion return authoritative quote and discount impact.
+5. UI displays target price, currency, effective date and next charge.
+6. If immediate charge is required and Admin is not Billing Owner, request Billing Owner approval.
+7. API accepts a command with an idempotency key and expected state version.
+8. Billing/payment workflow processes the charge.
+9. Subscription transitions only after authoritative payment success.
+10. Entitlement service applies the effective access change.
+11. Audit, notification and analytics events are emitted.
+12. Operation status is returned from authoritative state, not optimistic frontend assumptions.
+
+This is a logical training path. Actual system boundaries and provider semantics must be confirmed during Discovery.
+
+### Six critical engineering concerns
+
+**Authorization:** check roles on the backend, at the relevant action boundary. Frontend visibility is not access control.
+
+**Financial confirmation:** price, currency, discount and effective date shown to the user must match the authoritative quote accepted for execution. Revalidate stale quotes.
+
+**Idempotency:** duplicate submissions must not create duplicate charges or state transitions.
+
+**Timeout:** a timeout is an unknown outcome, not proof of payment failure. Query/reconcile before retry.
+
+**State ownership:** know which component owns payment, subscription and entitlement truth. Do not update multiple service stores blindly.
+
+**Auditability:** retain actor, operation, confirmation, before/after state, timestamps and correlation identifiers without logging secrets.
+
+## 6. Common AI implementation failures
+
+| Failure | Why dangerous | Control |
+|---|---|---|
+| Hallucinated API/class | Agent invents a nonexistent abstraction | Verify actual symbols and call paths |
+| Tests mirror implementation | Wrong code and wrong tests agree | Independent AC-derived cases |
+| Overengineering | Unrelated refactor increases blast radius | Minimal scope and separate proposal |
+| Silent business decision | Agent invents financial policy | CLARIFY |
+| Over-mocking | Integration failure is hidden | Contract and integration tests |
+| Unsafe migration | Data loss or incompatible deployment | Migration review and recovery plan |
+| Hidden side effects | Unexpected events/state changes | Trace side effects and audit |
+
+## 7. Implementation Skill
+
+The [Implement Work Package Skill](../skills/implement-work-package/SKILL.md) defines:
+- inputs: approved Task Packet, specification, ADRs, context and code;
+- preconditions: READY status, dependencies complete, rules approved;
+- workflow: inspect, baseline, plan, test, implement, verify, diff review, report;
+- constraints: no unrelated changes, no test weakening, no production data, no merge/deploy;
+- outputs: summary, files, AC mapping, test results, evidence, risks and next action.
+
+Valid final statuses are IMPLEMENTED, NEEDS_FIX, BLOCKED and CLARIFICATION_REQUIRED. Do not use VERIFIED or APPROVED for the agent's own work.
+
+## 8. Implementation Readiness Gate
+
+- [ ] Work package is READY.
+- [ ] Requirements and ACs are approved.
+- [ ] Dependencies and contracts are complete.
+- [ ] Relevant ADRs are accepted.
+- [ ] Allowed repositories and paths are defined.
+- [ ] Critical invariants are included in context.
+- [ ] Tests and evidence are specified.
+- [ ] Secrets and external access are restricted.
+- [ ] Stop conditions, budget and retry limits are defined.
+
+## 9. Practical exercise — WP-05
+
+Using [WP-05 Immediate Upgrade](../case-study/04-architecture/implementation-plan.md) and the [work package contract](../orchestration/work-packages.md):
+1. Draft a Task Packet.
+2. Identify the exact requirements and ACs.
+3. Design tests for success, decline, timeout, duplicate command and webhook, authorization failure and entitlement outage.
+4. Define the smallest implementation scope.
+5. Write an implementation report that clearly distinguishes executed checks from planned checks.
+
+**Next:** [Lesson 09 — Quality Engineering](09-quality-engineering.md).
 
 ## Knowledge check — 10 questions
 
-1. What best describes the purpose of this stage?
-   - A. Create a traceable and controlled part of the delivery lifecycle
-   - B. Generate code without context
-   - C. Remove all human ownership
-   - D. Optimize prompt length
+1. What must the Implementation Agent do before editing?  
+   A. Rewrite the service. B. Read the task packet, relevant artifacts and existing code/tests. C. Start production deployment. D. Delete failing tests.
 
-2. Which input should be treated as authoritative?
-   - A. An undocumented chat assumption
-   - B. The approved, versioned upstream artifacts
-   - C. The implementation agent summary
-   - D. A model confidence score
+2. What should a test be derived from?  
+   A. The implementation's current behavior only. B. Approved requirements and acceptance criteria. C. The agent's confidence. D. A random sample.
 
-3. What should happen when a critical decision is missing?
-   - A. Guess and continue
-   - B. Hide the uncertainty
-   - C. Stop the dependent action and request clarification
-   - D. Delete the requirement
+3. What does a provider timeout mean?  
+   A. Payment definitely failed. B. Payment definitely succeeded. C. Outcome is unknown until reconciled. D. Retry with a new key immediately.
 
-4. What is the strongest completion evidence?
-   - A. Agent says done
-   - B. A large code diff
-   - C. A high model score
-   - D. Independent evidence tied to acceptance criteria
+4. Why are characterization tests used?  
+   A. To prove legacy behavior is correct. B. To capture observed behavior before change when documentation is incomplete. C. To replace acceptance criteria. D. To test only UI text.
 
-5. What enables bounded autonomy?
-   - A. Explicit scope, permissions, gates and recovery
-   - B. Unrestricted administrator access
-   - C. A long system prompt only
-   - D. Skipping audit
+5. What is a vertical slice?  
+   A. A complete user-visible path across relevant layers. B. All frontend tasks first. C. All database migrations first. D. A refactor of every service.
 
-6. What should a reliable handoff include?
-   - A. Only a status emoji
-   - B. Inputs, decisions, state, outputs and evidence
-   - C. Only the model name
-   - D. Only a verbal summary
+6. Why is frontend role hiding insufficient?  
+   A. Users cannot inspect HTML. B. Authorization must be enforced at the backend/action boundary. C. Backend is not involved in billing. D. UI cannot call APIs.
 
-7. Which condition should block progression?
-   - A. A short file name
-   - B. A nonessential heading style
-   - C. A failed mandatory invariant or approval gate
-   - D. A completed task
+7. What should happen if code behavior conflicts with approved Business Rule?  
+   A. Follow legacy behavior silently. B. Change business rule in code. C. Stop affected work, provide evidence and request owner clarification. D. Remove the rule.
 
-8. How should metrics be interpreted?
-   - A. Without a baseline
-   - B. As proof of causation
-   - C. As a substitute for ownership
-   - D. With definitions, baseline, sample and context
+8. What is a valid implementation-agent final status?  
+   A. VERIFIED. B. APPROVED. C. IMPLEMENTED. D. RELEASE_COMPLETE.
 
-9. Who owns consequential business decisions?
-   - A. The accountable human decision owner
-   - B. The coding agent
-   - C. The test runner
-   - D. The cheapest model
+9. Why avoid overengineering in a bounded package?  
+   A. It prevents all refactoring. B. It expands blast radius beyond approved scope. C. It reduces test count. D. It makes code shorter.
 
-10. What should the practical output demonstrate?
-   - A. Only tool usage
-   - B. A completed artifact with reviewable evidence
-   - C. A production change without approval
-   - D. Unrestricted autonomy
+10. Which report is most useful to the orchestrator?  
+    A. “Done, looks good.” B. Summary, changed files, exact test outcomes, AC mapping, evidence, limitations and risks. C. Model's private reasoning. D. Token count only.
 
-<details>
-<summary><strong>Answer key and explanations</strong></summary>
+### Answer key and explanations
 
-1. **A** — This stage exists to produce a controlled, traceable delivery outcome.
-2. **B** — Approved artifacts are the source of truth.
-3. **C** — Critical uncertainty must be escalated, not concealed.
-4. **D** — Evidence must demonstrate the expected behavior.
-5. **A** — Autonomy is safe only within enforced boundaries.
-6. **B** — Handoffs need enough context to continue safely.
-7. **C** — Mandatory controls cannot be bypassed.
-8. **D** — Metrics require sound definitions and interpretation.
-9. **A** — Agents may advise, but accountable owners decide.
-10. **B** — The course emphasizes verifiable artifacts, not tool demonstrations.
-
-</details>
-
-## Completion criteria
-
-- [ ] I can explain the stage and its boundaries.
-- [ ] I inspected the linked source artifacts.
-- [ ] I completed the practical exercise.
-- [ ] I answered the knowledge check and reviewed explanations.
-- [ ] I know which decisions require a human owner.
-
-[Next lesson →](../lessons/09-quality-engineering.md)
+1. **B** — Brownfield understanding is a precondition to safe changes.  
+2. **B** — Requirements define expected behavior.  
+3. **C** — Timeout is ambiguous; reconcile before retrying financial effects.  
+4. **B** — Observed behavior is captured without declaring it the correct policy.  
+5. **A** — A vertical slice exposes cross-layer integration early.  
+6. **B** — Backend enforcement protects APIs from unauthorized calls.  
+7. **C** — Business decisions belong to authorized owners.  
+8. **C** — Implementation agents report their own work, not independent verification.  
+9. **B** — Keep changes bounded and reviewable.  
+10. **B** — Structured evidence enables independent decisions.
