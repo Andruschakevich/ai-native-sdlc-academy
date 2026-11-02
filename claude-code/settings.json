@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": ["Read", "Glob", "Grep"],
+    "ask": ["Bash(git diff *)", "Bash(git status *)", "Bash(npm test *)", "Bash(npm run lint *)", "Bash(npm run typecheck *)"],
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)", "Bash(rm -rf *)", "Bash(git push --force *)", "Bash(terraform apply *)", "Bash(kubectl delete *)"]
+  }
+}

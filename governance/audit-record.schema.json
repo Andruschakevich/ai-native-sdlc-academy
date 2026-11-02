@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Agent Execution Record",
+  "type": "object",
+  "required": [
+    "execution_id",
+    "workflow_id",
+    "work_package_id",
+    "agent_role",
+    "policy_version",
+    "permission_profile",
+    "started_at",
+    "result"
+  ],
+  "properties": {
+    "execution_id": {
+      "type": "string"
+    },
+    "workflow_id": {
+      "type": "string"
+    },
+    "work_package_id": {
+      "type": "string"
+    },
+    "agent_role": {
+      "type": "string"
+    },
+    "model_profile": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "permission_profile": {
+      "type": "string"
+    },
+    "input_artifact_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tools_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification": {
+      "type": "object"
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "owner",
+          "decision",
+          "timestamp"
+        ],
+        "properties": {
+          "owner": {
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "APPROVED",
+              "REJECTED",
+              "CONDITIONAL"
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scope": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "result": {
+      "enum": [
+        "IMPLEMENTED",
+        "VERIFIED",
+        "NEEDS_FIX",
+        "BLOCKED",
+        "APPROVAL_PENDING",
+        "DONE"
+      ]
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

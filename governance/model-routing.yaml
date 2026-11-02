@@ -1,0 +1,27 @@
+version: 1
+profiles:
+  fast:
+    intended_tasks: [classification, code_search, formatting, simple_documentation]
+    quality_requirement: validated_for_task_type
+    budget: low
+  balanced:
+    intended_tasks: [documentation, simple_tests, routine_analysis]
+    quality_requirement: task_evaluation_passed
+    budget: medium
+  high_reasoning:
+    intended_tasks: [complex_implementation, architecture_review, domain_analysis]
+    quality_requirement: independent_verification_required
+    budget: high
+  independent_review:
+    intended_tasks: [security_review, acceptance_verification, critical_spec_review]
+    context_separation: required
+    evidence_review: required
+    deterministic_checks: required
+fallback:
+  may_reduce_capability: false
+  high_risk_requires_owner_approval: true
+  verification_requirements_must_not_be_weakened: true
+governance:
+  model_and_prompt_versions_logged: true
+  cost_budget_required: true
+  quality_evaluated_by_task_class: true

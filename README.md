@@ -1,75 +1,77 @@
 # AI-Native SDLC Academy
 
-> **A practical, self-paced training project about understanding, configuring, and applying AI-native software engineering workflows.**
+> A practical, self-paced academy for designing a production-oriented AI-native delivery system for an existing product.
 
-This academy documents the approach I have learned, practiced, and currently apply in my engineering work. It is a learning project: the examples demonstrate my current understanding of how to configure an AI-native workflow, organize agent responsibilities, provide context, verify generated work, and keep people accountable for important decisions.
-
-It is not a universal standard, a claim of fully autonomous software delivery, or a reproduction of any employer's internal systems. All examples are original, fictional, and safe to adapt.
+This academy documents an approach to AI-native engineering learned and applied in engineering work. It is an educational project with original fictional examples. It is not SIXT material, an export of any employer internal systems, or a claim that the examples are production implementations.
 
 ## Start here
 
-**New to the course? Start with [Lesson 01 — From AI-Assisted to AI-Native Engineering](lessons/01-ai-native-engineering.md).**
+Begin with [Lesson 01 — AI SDLC Fundamentals](lessons/01-ai-sdlc-fundamentals.md), then follow all 12 lessons in order. Each lesson includes detailed concepts, a worked example from the same fictional product, a practical exercise, links to completed artifacts and 10 lesson-specific knowledge-check questions with answer explanations.
 
-Follow the lessons in order. Each lesson contains:
-- The concepts and reasoning behind the topic
-- A practical walkthrough using one fictional product
-- Hands-on tasks and links to all related artifacts
-- **10 multiple-choice knowledge-check questions**
-- An answer key with short explanations, hidden in a collapsible section so you can test yourself first
+## Course brief
 
-There are 12 lessons. You can complete them independently at your own pace. No account, backend, or paid course platform is required; the course is readable directly in GitHub.
+| Dimension | Decision |
+|---|---|
+| Delivery scope | Business and software delivery |
+| Starting point | Existing brownfield product |
+| Target autonomy | L4 — bounded autonomy |
+| Primary execution engine | Claude / Anthropic |
+| Architecture | Vendor-aware, portable workflow principles |
+| Priorities | Speed, quality, safety and business outcome |
+| First use case | Self-service subscription management, from request to measured production outcome |
 
-## Course roadmap
+## Roadmap
 
-| # | Lesson | What you will produce |
+| # | Lesson | Main output |
 |---|---|---|
-| 01 | [From AI-Assisted to AI-Native Engineering](lessons/01-ai-native-engineering.md) | A shared mental model and lifecycle map |
-| 02 | [Understanding the AI-Native SDLC](lessons/02-ai-assisted-vs-ai-native.md) | A current-state and target-state workflow map |
-| 03 | [Choosing the First Workflow](lessons/03-spec-driven-development.md) | A scoped pilot and success criteria |
-| 04 | [Preparing the Repository and Agent Context](lessons/04-agent-architecture.md) | A project context and agent contract |
-| 05 | [Spec-Driven Development in Practice](lessons/05-claude-code-setup.md) | An approved, testable feature specification |
-| 06 | [Configuring Agent Capabilities](lessons/06-custom-skills-and-commands.md) | Reusable skills, commands, and hooks |
-| 07 | [Designing the Agentic Workflow](lessons/07-agentic-workflows.md) | A staged workflow with handoffs and stop conditions |
-| 08 | [AI-Assisted Implementation](lessons/08-ai-powered-testing.md) | A bounded implementation plan and change |
-| 09 | [Testing and Verification](lessons/09-ai-code-review.md) | A risk-based test strategy and evidence |
-| 10 | [Code Review, Quality Gates, and Evaluation](lessons/10-quality-gates-and-evaluation.md) | Review criteria and an evaluation approach |
-| 11 | [Governance, Human Oversight, and Adoption](lessons/11-human-in-the-loop-and-safety.md) | Guardrails, ownership, and an adoption plan |
-| 12 | [End-to-End Implementation: Subscription Upgrade](lessons/12-adoption-and-measuring-impact.md) | A complete workflow from business request to measured outcome |
+| 01 | [AI SDLC Fundamentals](lessons/01-ai-sdlc-fundamentals.md) | Target lifecycle and autonomy model |
+| 02 | [Intent Engineering](lessons/02-intent-engineering.md) | Business Intent and GO / CLARIFY / STOP |
+| 03 | [Product & System Discovery](lessons/03-product-system-discovery.md) | Evidence-backed context, domain model and impact analysis |
+| 04 | [Specification Engineering](lessons/04-specification-engineering.md) | Requirements, business rules, acceptance criteria and traceability |
+| 05 | [Architecture & Planning](lessons/05-architecture-planning.md) | Architecture, ADRs, dependency graph and work packages |
+| 06 | [Claude Code Engineering](lessons/06-claude-code-engineering.md) | CLAUDE.md, Rules, Skills, Subagents, Hooks, MCP and permissions |
+| 07 | [Agent Orchestration](lessons/07-agent-orchestration.md) | Orchestrator, state, handoffs, retries and gates |
+| 08 | [AI Implementation](lessons/08-ai-implementation.md) | Bounded implementation and evidence |
+| 09 | [Quality Engineering](lessons/09-quality-engineering.md) | Independent verification and risk-based testing |
+| 10 | [Release & Operations](lessons/10-release-operations.md) | Progressive delivery, observability and recovery |
+| 11 | [Governance & Business Metrics](lessons/11-governance-business-metrics.md) | Policies, permissions, audit, cost and autonomy metrics |
+| 12 | [End-to-End Implementation](lessons/12-end-to-end-implementation.md) | Integrated delivery architecture and capstone |
 
-## The practical case study: Subscription Platform
+## Case study
 
-Throughout the course, we use a fictional subscription product. The capstone is a plan-upgrade feature. The scenario is intentionally small enough to understand but rich enough to explore requirements, agent context, implementation, tests, review, quality gates, approvals, and measurement.
+All lessons use one fictional brownfield subscription platform. The feature includes upgrade, downgrade, billing-cycle changes, cancel, pause, resume and reactivate. Start with [the case-study overview](case-study/README.md) and use the [artifact index](case-study/ARTIFACT-INDEX.md) to navigate the completed documents.
 
-Start with the [Subscription Platform case study](examples/subscription-platform/README.md).
+Case-study decisions are training assumptions, not universal industry rules. Real product owners must validate them. No real payment provider, production environment, customer data or credentials are used.
 
-**Important:** business rules such as proration, refunds, billing dates, and entitlement changes are deliberately left open. The learner must identify questions and get decisions from a product/domain owner rather than allowing an agent to invent business behavior.
+## Learning path
+
+1. Read each lesson in sequence.
+2. Inspect the linked artifacts and follow references to upstream decisions.
+3. Complete the practical exercise in a branch or your own copy.
+4. Answer the 10 questions before opening the answer key.
+5. Continue using the Next lesson link.
+
+Quizzes are self-assessment. GitHub Markdown does not persist scores or provide an LMS experience.
 
 ## Repository map
 
-- `lessons/` — the guided course, including the 10-question knowledge check at the end of each lesson
-- `examples/` — practical templates and reference artifacts used by the lessons
-- `assessments/` — workflow maturity assessment
+- lessons/ — 12 guided lessons.
+- case-study/ — interconnected Subscription Management artifacts.
+- skills/ — example Claude Code skills.
+- claude-code/ — context, rules, agents and permissions examples.
+- orchestration/ — workflow state, work packages and execution evidence.
+- quality/ — test strategy and verification report.
+- release/ — release and operations policy.
+- governance/ — policies, permissions, approvals and metrics.
+- reference/ — target architecture and autonomy model.
 
-## How to use the course
+## Important boundaries
 
-1. Open Lesson 01 from the link above.
-2. Read the lesson and inspect the linked artifacts.
-3. Complete the practical exercise in your own copy or branch of the repository.
-4. Answer the 10 questions without opening the answer key.
-5. Review the explanations and revisit any topic you missed.
-6. Continue using the **Next lesson** link at the bottom of the page.
+- All product names, services, data and metrics in the case study are fictional.
+- Agent instructions communicate rules but do not enforce security. Use tool permissions, IAM, sandboxing, CI/CD and policy controls.
+- Humans retain accountability for business decisions and high-impact approvals.
+- Claude Code is the first execution engine discussed; workflow and control-plane principles are portable.
 
-The quizzes are self-assessment, not a proctored exam. GitHub Markdown does not persist quiz scores or provide a learning-management-system experience.
+## License
 
-## Learning principles
-
-- Start with a real engineering problem, not with a tool.
-- Give agents explicit context, scope, and expected outputs.
-- Make requirements and acceptance criteria testable.
-- Prefer deterministic verification for mandatory controls.
-- Keep production, security, product, and risk decisions with accountable humans.
-- Measure delivery outcomes together with quality, stability, and cost.
-
-## Contributing and license
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). The repository is published under the [MIT License](LICENSE).
+MIT. See [LICENSE](LICENSE).
