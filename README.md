@@ -6,7 +6,7 @@ This academy documents an approach to AI-native engineering learned and applied 
 
 ## Start here
 
-Begin with [Lesson 01 — AI SDLC Fundamentals](lessons/01-ai-sdlc-fundamentals.md), then follow all 12 lessons in order. Each lesson includes concepts, a practical exercise, links to completed artifacts and 10 knowledge-check questions with explanations.
+Begin with [Lesson 01 — AI SDLC Fundamentals](lessons/01-ai-sdlc-fundamentals.md), then follow all 12 lessons in order. Each lesson includes detailed concepts, a worked example from the same fictional product, a practical exercise, links to completed artifacts and 10 lesson-specific knowledge-check questions with answer explanations.
 
 ## Course brief
 
